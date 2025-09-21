@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Login = ({ onLoginSuccess, onClose }) => {
   const [username, setUsername] = useState('');
@@ -22,13 +22,18 @@ const Login = ({ onLoginSuccess, onClose }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-        credentials: 'include', // Send cookies
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        onLoginSuccess(data.user);
+        // Store JWT token and user info in localStorage
+        localStorage.setItem('jwtToken', data.token);
+        localStorage.setItem('username', data.user.username);
+        localStorage.setItem('userId', data.user.id);
+
+        // Call success callback
+        onLoginSuccess(data.user.username);
       } else {
         setError(data.error || 'Login failed');
       }
@@ -57,9 +62,25 @@ const Login = ({ onLoginSuccess, onClose }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // After successful registration, switch to login view
-        setIsRegistering(false);
-        setError('Registration successful! Please log in.');
+        // After successful registration, automatically log in
+        const loginResponse = await fetch(`${API_BASE_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const loginData = await loginResponse.json();
+
+        if (loginResponse.ok) {
+          localStorage.setItem('jwtToken', loginData.token);
+          localStorage.setItem('username', loginData.user.username);
+          localStorage.setItem('userId', loginData.user.id);
+          onLoginSuccess(loginData.user.username);
+        } else {
+          setError('Registration successful, but login failed');
+        }
       } else {
         setError(data.error || 'Registration failed');
       }
@@ -91,12 +112,12 @@ const Login = ({ onLoginSuccess, onClose }) => {
 
           {error && (
             <div style={{
-              color: isRegistering ? 'green' : 'red',
-              backgroundColor: isRegistering ? '#e8f5e9' : '#ffebee',
+              color: 'red',
+              backgroundColor: '#ffebee',
               padding: '10px',
               borderRadius: '4px',
               marginBottom: '15px',
-              border: `1px solid ${isRegistering ? '#4caf50' : '#f44336'}`
+              border: '1px solid #f44336'
             }}>
               {error}
             </div>
@@ -162,10 +183,10 @@ const Login = ({ onLoginSuccess, onClose }) => {
             textAlign: 'center'
           }}>
             <p><strong>Test Credentials:</strong></p>
-            <p>Username: admin | Password: 123</p>
-            <p>Username: user | Password: 123</p>
+            <p>Username: admin | Password: 111</p>
+            <p>Username: user | Password: password</p>
           </div>
-        </form>.
+        </form>
       </div>
     </div>
   );

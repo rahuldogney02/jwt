@@ -5,21 +5,18 @@ const projects = [
   {
     title: 'Project 1',
     description: 'A brief description of project 1.',
-    link: '#'
   },
   {
     title: 'Project 2',
     description: 'A brief description of project 2.',
-    link: '#'
   },
   {
     title: 'Project 3',
     description: 'A brief description of project 3.',
-    link: '#'
   }
 ];
 
-const Portfolio = () => {
+const Portfolio = (link='#') => {
   return (
     <div className="portfolio">
       <h2>Projects</h2>
