@@ -1,50 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import Login from './Login';
+import React from 'react';
 
-const Header = () => {
-  const [showLogin, setShowLogin] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (username) {
-      setLoggedIn(true);
-    }
-  }, []);
-
-  const handleLoginClick = () => {
-    setShowLogin(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    setLoggedIn(false);
-  };
-
-  const handleLoginSuccess = () => {
-    setLoggedIn(true);
-    setShowLogin(false);
-  };
-
-  const handleCloseLogin = () => {
-    setShowLogin(false);
-  };
-
+const Header = ({ user, onLogout, onShowLogin }) => {
   return (
     <header className="header">
       <h1>My Portfolio</h1>
-      <div className="login-section">
-        {loggedIn ? (
-          <div>
-            <span>Welcome, {localStorage.getItem('username')}!</span>
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-        ) : (
-          <button onClick={handleLoginClick}>Login</button>
-        )}
-      </div>
-      {showLogin && <Login onLoginSuccess={handleLoginSuccess} onClose={handleCloseLogin} />}
+      <nav>
+        <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem' }}>
+          {user ? (
+            <li>
+              <span>Welcome, {user.username}!</span>
+              <button onClick={onLogout}>Logout</button>
+            </li>
+          ) : (
+            <li>
+              <button onClick={onShowLogin}>Login</button>
+            </li>
+          )}
+        </ul>
+      </nav>
     </header>
   );
 };
