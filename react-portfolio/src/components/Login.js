@@ -38,7 +38,7 @@ const Login = ({ onLoginSuccess, onClose }) => {
         </button>
         </span>
         <form onSubmit={isRegistering ? handleRegister : handleLogin}>
-          <h2>{isRegistering ? 'Register' : 'Login'}</h2>
+          <h2 style={{color:"black"}}>{isRegistering ? 'Register' : 'Login'}</h2>
           <div className="form-group">
             <label>Username</label>
             <input
