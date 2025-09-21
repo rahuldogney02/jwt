@@ -23,9 +23,11 @@ function Main() {
   const [showLogin, setShowLogin] = useState(false);
   const navigate = useNavigate();
 
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+
   const handleLogout = useCallback(async () => {
     try {
-      await fetch('http://localhost:3001/api/auth/logout', {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -34,13 +36,13 @@ function Main() {
     }
     setUser(null);
     navigate('/');
-  }, [navigate]);
+  }, [navigate, API_BASE_URL]);
 
   useInactivity(3 * 60 * 1000, user ? handleLogout : () => {});
 
   const refreshToken = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/auth/refresh', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -53,12 +55,12 @@ function Main() {
     } catch (error) {
       handleLogout();
     }
-  }, [handleLogout]);
+  }, [handleLogout, API_BASE_URL]);
 
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/auth/verify', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -74,7 +76,7 @@ function Main() {
       }
     };
     verifyUser();
-  }, [refreshToken]);
+  }, [refreshToken, API_BASE_URL]);
 
   useEffect(() => {
     let refreshInterval;

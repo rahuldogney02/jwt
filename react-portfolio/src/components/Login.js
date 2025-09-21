@@ -8,7 +8,7 @@ const Login = ({ onLoginSuccess, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const API_BASE_URL = 'http://localhost:3001/api/auth';
+  const API_BASE_URL = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/api/auth` : 'http://localhost:3001/api/auth';
 
   const handleLogin = async (e) => {
     e.preventDefault();
