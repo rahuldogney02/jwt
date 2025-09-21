@@ -1,0 +1,25 @@
+{
+  "name": "jwt-auth-deployment",
+  "version": "1.0.0",
+  "description": "JWT Authentication App with React Frontend and Node.js Backend",
+  "scripts": {
+    "deploy": "./deploy.sh",
+    "deploy:backend": "cd jwt-backend && vercel --prod",
+    "deploy:frontend": "cd react-portfolio && vercel --prod",
+    "dev:backend": "cd jwt-backend && npm run dev",
+    "dev:frontend": "cd react-portfolio && npm start",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd jwt-backend && npm install",
+    "install:frontend": "cd react-portfolio && npm install"
+  },
+  "keywords": [
+    "jwt",
+    "authentication",
+    "react",
+    "nodejs",
+    "express",
+    "vercel"
+  ],
+  "author": "",
+  "license": "ISC"
+}
