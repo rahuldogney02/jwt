@@ -1,0 +1,9 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: white;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
