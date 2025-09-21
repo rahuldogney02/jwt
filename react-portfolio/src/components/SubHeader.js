@@ -6,7 +6,6 @@ const SubHeader = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginTime, setLoginTime] = useState(null);
   const [sessionDuration, setSessionDuration] = useState(0);
-  const [user, setUser] = useState(null);
 
   const API_BASE_URL = 'http://localhost:3001/api/auth';
 
@@ -28,9 +27,9 @@ const SubHeader = () => {
           });
 
           if (response.ok) {
-            const data = await response.json();
+            await response.json();
             setLoggedIn(true);
-            setUser(username);
+            
 
             // Set login time from token (issued at time)
             const tokenPayload = JSON.parse(atob(token.split('.')[1]));
@@ -41,7 +40,7 @@ const SubHeader = () => {
             localStorage.removeItem('username');
             localStorage.removeItem('userId');
             setLoggedIn(false);
-            setUser(null);
+            
           }
         } catch (error) {
           console.error('Token verification failed:', error);
@@ -50,7 +49,7 @@ const SubHeader = () => {
           localStorage.removeItem('username');
           localStorage.removeItem('userId');
           setLoggedIn(false);
-          setUser(null);
+          
         }
       }
     };
@@ -106,14 +105,14 @@ const SubHeader = () => {
 
     // Update state
     setLoggedIn(false);
-    setUser(null);
+    
     setLoginTime(null);
     setSessionDuration(0);
   };
 
   const handleLoginSuccess = (username) => {
     setLoggedIn(true);
-    setUser(username);
+    
     setLoginTime(new Date());
     setShowLogin(false);
   };
